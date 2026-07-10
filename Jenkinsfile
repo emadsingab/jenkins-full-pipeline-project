@@ -28,6 +28,7 @@ pipeline {
                     sh 'mvn -s settings.xml -DskipTests install'
                 }
             }
+
             post {
                 success {
                     echo 'Now archiving the artifacts'
@@ -35,16 +36,33 @@ pipeline {
                 }
             }
         }
-        stage ("Test"){
-            steps{
-                sh 'mvn -s settings.xml test'
+
+        stage('Test') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'nexus-login',
+                        usernameVariable: 'NEXUS_USER',
+                        passwordVariable: 'NEXUS_PASS'
+                    )
+                ]) {
+                    sh 'mvn -s settings.xml test'
+                }
             }
         }
-        stage ("Checkstyle Analysis"){
-            steps{
-                sh 'mvn -s settings.xml checkstyle:checkstyle'
+
+        stage('Checkstyle Analysis') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'nexus-login',
+                        usernameVariable: 'NEXUS_USER',
+                        passwordVariable: 'NEXUS_PASS'
+                    )
+                ]) {
+                    sh 'mvn -s settings.xml checkstyle:checkstyle'
+                }
             }
         }
     }
-
 }
