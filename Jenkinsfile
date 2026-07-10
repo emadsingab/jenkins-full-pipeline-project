@@ -97,5 +97,31 @@ pipeline {
                 }
             }
         }
+
+        stage('Nexus Upload') {
+            steps {
+                echo 'Now uploading the artifact to Nexus'
+
+                sh 'ls -lah target/*.war'
+
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: "${NEXUSIP}:${NEXUSPORT}",
+                    groupId: 'QA',
+                    version: "${env.BUILD_NUMBER}-${env.TIMESTAMP}",
+                    repository: "${RELEASE_REPO}",
+                    credentialsId: 'nexus-login',
+                    artifacts: [
+                        [
+                            artifactId: 'vprofileapp',
+                            classifier: '',
+                            file: 'target/vprofile-v2.war',
+                            type: 'war'
+                        ]
+                    ]
+                )
+            }
+        }
     }
 }
