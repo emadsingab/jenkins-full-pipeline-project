@@ -3,7 +3,8 @@ pipeline {
 
     tools {
         maven 'maven:3.9.12'
-        jdk 'JDK21'
+        jdk 'JDK21' 
+        sonarscanner 'SonarQube Scanner'
     }
 
     environment {
@@ -13,6 +14,8 @@ pipeline {
         NEXUSIP        = '172.31.14.229'
         NEXUSPORT      = '8081'
         NEXUS_GRP_REPO = 'vpro-maven-group'
+        SONARSERVER    = 'SonarQube-server'
+        SONARSCANNER   = 'SonarQube Scanner'
     }
 
     stages {
@@ -64,5 +67,25 @@ pipeline {
                 }
             }
         }
+        stage('Sonar Analysis') {
+            environment {
+                scannerHome = tool "${SONARSCANNER}"
+            }
+            steps {
+                withSonarQubeEnv("${SONARSERVER}") {
+                    sh '''${scannerHome}/bin/sonar-scanner \
+            -Dsonar.projectKey=vprofile \
+            -Dsonar.projectName=vprofile \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.sources=src/main/java \
+            -Dsonar.tests=src/test/java \
+            -Dsonar.java.binaries=target/classes \
+            -Dsonar.java.test.binaries=target/test-classes \
+            -Dsonar.junit.reportPaths=target/surefire-reports \
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
+            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+        }
+    }
+}
     }
 }
