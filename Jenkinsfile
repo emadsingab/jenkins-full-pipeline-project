@@ -90,4 +90,13 @@ pipeline {
             }
         }
     }
+    stage ("Quality Gate") {
+        steps {
+            timeout (time: 1, unit: 'HOURS') {
+                // wait for quality gate to finish and abort the pipeline if the quality gate is not passed
+                // can be by MINUTE or HOUR 
+                waitForQualityGate abortPipeline: true
+            }
+        }
+    }
 }
