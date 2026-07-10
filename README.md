@@ -10,7 +10,7 @@
 
 This repository hosts the Jenkins Declarative Pipeline orchestration for the **VProfile** enterprise web application. The pipeline provides a fully automated Continuous Integration and Continuous Deployment (CI/CD) workflow, ensuring rigorous code quality checks, automated testing, and secure artifact management.
 
-## 🏗️ Pipeline Architecture
+##  Pipeline Architecture
 
 The pipeline follows a robust, multi-stage architecture designed to fail fast and provide immediate feedback to developers.
 
@@ -42,10 +42,11 @@ graph TD
     end
     
     %% Styling
-    classDef trigger fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px;
-    classDef stage fill:#f5f5f5,stroke:#9e9e9e,stroke-width:2px;
-    classDef success fill:#e8f5e9,stroke:#4caf50,stroke-width:2px;
-    classDef fail fill:#ffebee,stroke:#f44336,stroke-width:2px;
+    classDef default fill:#334155,stroke:#1e293b,stroke-width:2px,color:#ffffff,rx:8,ry:8;
+    classDef trigger fill:#0ea5e9,stroke:#0284c7,stroke-width:2px,color:#ffffff,rx:8,ry:8;
+    classDef stage fill:#64748b,stroke:#475569,stroke-width:2px,color:#ffffff,rx:8,ry:8;
+    classDef success fill:#10b981,stroke:#059669,stroke-width:2px,color:#ffffff,rx:8,ry:8;
+    classDef fail fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#ffffff,rx:8,ry:8;
     
     class A trigger;
     class C,D,E,F stage;
@@ -53,7 +54,7 @@ graph TD
     class Z fail;
 ```
 
-## 🚀 Pipeline Stages Breakdown
+##  Pipeline Stages Breakdown
 
 The pipeline is structured into the following sequential stages:
 
@@ -66,7 +67,7 @@ The pipeline is structured into the following sequential stages:
 7. **Nexus Upload**: Upon a successful Quality Gate evaluation, the verified `.war` artifact is securely published to the Sonatype Nexus Repository Manager (`vprofile-release` repository).
 8. **Slack Notifications**: Dispatches real-time status alerts (Success/Failure) to the designated Slack channel (`#vprofile_jenkins`). Alerts contain actionable metadata, including the build number and a direct hyperlink to the Jenkins job console.
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 The infrastructure leverages the following industry-standard toolchain:
 
@@ -80,7 +81,7 @@ The infrastructure leverages the following industry-standard toolchain:
 | **Static Code Analysis** | Checkstyle | Integrated via Maven |
 | **Alerting** | Slack | Jenkins Slack Plugin |
 
-## ⚙️ Environment Variables & Configuration Matrix
+##  Environment Variables & Configuration Matrix
 
 The pipeline execution is driven by environment variables explicitly defined within the `Jenkinsfile` environment block.
 
@@ -102,10 +103,8 @@ The Jenkins environment must have the following credentials provisioned:
 * `nexus-login` (Username/Password): Authentication context for the Sonatype Nexus Repository Manager.
 * `slacke-cicd` (Secret text): Slack integration token (abstracted via the Slack Jenkins plugin).
 
-## 📝 Change Log
+## Change Log
 
 ### Recent Maintenance Updates
 * **Configuration Integrity**: Remediated tool declarations within the pipeline execution context. Explicitly bound the `maven` and `jdk` directives to provision `maven:3.9.12` and `JDK21` correctly across pipeline agents.
 
----
-*Maintained by the DevOps Engineering Team. Auto-generated documentation aligned with current CI/CD infrastructure state.*
