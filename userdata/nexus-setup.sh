@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Stop script when any command fails that's useful for troubleshooting and avoiding run until the end and get error
-set -e
+set -euo pipefail
 
 # Nexus latest version from Sonatype downloads page
 NEXUS_VERSION="3.93.2-01"
